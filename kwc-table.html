@@ -1,0 +1,107 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="kwc-table">
+  <template>
+    <style>
+      table {
+        @apply(--kwc-table-table);
+      }
+
+      thead {
+        @apply(--kwc-table-thead);
+      }
+
+      thead tr {
+        @apply(--kwc-table-thead-tr);
+      }
+
+      thead th {
+        @apply(--kwc-table-thead-th);
+      }
+
+      tbody {
+        @apply(--kwc-table-tbody);
+      }
+
+      tbody tr {
+        @apply(--kwc-table-tbody-tr);
+      }
+
+      tbody tr:nth-of-type(odd) {
+        @apply(--kwc-table-tbody-tr-odd);
+      }
+
+      tbody tr:nth-of-type(even) {
+        @apply(--kwc-table-tbody-tr-even);
+      }
+
+      tbody td {
+        @apply(--kwc-table-tbody-td);
+      }
+    </style>
+
+    <table>
+      <thead>
+      <tr>
+        <template is="dom-repeat" items="[[_columns]]" as="column">
+          <th>[[column.header]]</th>
+        </template>
+      </tr>
+      </thead>
+      <tbody>
+      <template is="dom-repeat" items="[[data]]" as="row">
+        <tr>
+          <template is="dom-repeat" items="[[_columns]]" as="column">
+            <td>[[_getCellContent(row, column)]]</td>
+          </template>
+        </tr>
+      </template>
+      </tbody>
+    </table>
+
+    <div hidden>
+      <content></content>
+    </div>
+  </template>
+
+  <script src="helpers.js"></script>
+  <script>
+    Polymer({
+      is: 'kwc-table',
+
+      properties: {
+        data: {
+          type: Array,
+          value: []
+        },
+        _columns: {
+          type: Array,
+          value: []
+        }
+      },
+
+      attached: function () {
+        var that = this
+        this._reloadColumns()
+        this.addEventListener("header-changed", function (e) {
+          if (window.kwc_table_helpers.isChildOf(e.target, this)) {
+            that._reloadColumns()
+          }
+        }, true)
+      },
+
+      _reloadColumns: function () {
+        this._columns = Array.from(this.querySelectorAll("kwc-table-column")).map(function (column) {
+          return {
+            header: column.header,
+            property: column.property
+          }
+        })
+      },
+
+      _getCellContent: function (row, column) {
+        return row[column.property]
+      }
+    })
+  </script>
+</dom-module>

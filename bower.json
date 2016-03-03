@@ -1,0 +1,27 @@
+{
+  "name": "kwc-table",
+  "version": "0.1.0",
+  "description": "An advanced table component",
+  "license": "MIT",
+  "main": "kwc-table.html",
+  "keywords": [
+    "polymer",
+    "web-component",
+    "table"
+  ],
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "node_modules",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  },
+  "homepage": "https://github.com/successk/kwc-table",
+  "authors": [
+    "Gaëtan Rizio <gaetan@rizio.fr>"
+  ],
+  "moduleType": []
+}

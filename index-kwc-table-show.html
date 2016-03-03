@@ -1,0 +1,142 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="kwc-table.html">
+<link rel="import" href="kwc-table-column.html">
+
+<dom-module id="index-kwc-table-show">
+  <template>
+    <style>
+      /* These styles test the right application of mixin */
+      kwc-table {
+        --kwc-table-table: {
+          width: 100%;
+          border-collapse: collapse;
+        };
+
+        --kwc-table-thead: {
+          border-bottom: 1px solid #000;
+        };
+
+        --kwc-table-thead-tr: {
+          background-color: #ff6f00;
+          color: #fff;
+        };
+
+        --kwc-table-thead-th: {
+          text-align: left;
+        };
+
+        --kwc-table-tbody: {
+          border: 1px solid #000;
+        };
+
+        --kwc-table-tbody-tr: {
+          font-style: italic;
+        };
+
+        --kwc-table-tbody-tr-odd: {
+          background-color: #fff8e1;
+        };
+
+        --kwc-table-tbody-tr-even: {
+          background-color: #ffecb3;
+        };
+
+        --kwc-table-tbody-td: {
+          font-weight: bold;
+        };
+      }
+
+
+    </style>
+
+    <kwc-table data="[[data]]">
+      <kwc-table-column header="" property="name"></kwc-table-column>
+      <kwc-table-column header="Phone" property="phone"></kwc-table-column>
+      <kwc-table-column header="City" property="city"></kwc-table-column>
+      <kwc-table-column header="Country" property="country"></kwc-table-column>
+    </kwc-table>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'index-kwc-table-show',
+
+      properties: {
+        data: {
+          type: Array,
+          value: [
+            // generated from http://www.generatedata.com/
+            {
+              "name": "Iliana",
+              "phone": "177-2985",
+              "city": "Beaumont",
+              "country": "Kazakhstan"
+            },
+            {
+              "name": "Emmanuel",
+              "phone": "1-634-566-5416",
+              "city": "Kassel",
+              "country": "Wallis and Futuna"
+            },
+            {
+              "name": "Cora",
+              "phone": "1-773-303-2393",
+              "city": "Cardedu",
+              "country": "Latvia"
+            },
+            {
+              "name": "Ruby",
+              "phone": "1-376-419-4501",
+              "city": "Portland",
+              "country": "Lithuania"
+            },
+            {
+              "name": "Caesar",
+              "phone": "1-277-427-5074",
+              "city": "Longvilly",
+              "country": "Bosnia and Herzegovina"
+            },
+            {
+              "name": "Brenden",
+              "phone": "143-5455",
+              "city": "Essene",
+              "country": "Botswana"
+            },
+            {
+              "name": "Chandler",
+              "phone": "654-2067",
+              "city": "Neustadt am Rübenberge",
+              "country": "Moldova"
+            },
+            {
+              "name": "Gabriel",
+              "phone": "1-560-110-9633",
+              "city": "Bozeman",
+              "country": "Saint Helena, Ascension and Tristan da Cunha"
+            },
+            {
+              "name": "Linda",
+              "phone": "1-195-344-5654",
+              "city": "St. Thomas",
+              "country": "Turks and Caicos Islands"
+            },
+            {
+              "name": "Melyssa",
+              "phone": "733-5646",
+              "city": "New Haven",
+              "country": "Guinea"
+            }
+          ]
+        }
+      },
+
+      attached: function () {
+        // This simulate a change of header it could happen with a i18n system.
+        var that = this
+        setTimeout(function () {
+          that.querySelector("kwc-table-column").header = "Name"
+        }, 1000)
+      }
+    })
+  </script>
+</dom-module>
