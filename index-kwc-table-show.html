@@ -46,13 +46,40 @@
         };
       }
 
+      kwc-table ::content .sortable {
+        font-style: italic;
+        cursor: pointer;
+      }
 
+      kwc-table ::content .sortable.sort:after {
+        margin-left: 1rem;
+      }
+
+      kwc-table ::content .sortable.up:after {
+        content: "↑";
+      }
+
+      kwc-table ::content .sortable.down:after {
+        content: "↓";
+      }
+
+      kwc-table ::content .sortable.level1:after {
+        font-size: 2rem;
+      }
+
+      kwc-table ::content .sortable.level2:after {
+        font-size: 1.5rem;
+      }
+
+      kwc-table ::content .sortable.level3:after {
+        font-size: 1rem;
+      }
     </style>
 
     <kwc-table data="[[data]]">
-      <kwc-table-column header="" property="name"></kwc-table-column>
-      <kwc-table-column header="Phone" property="phone"></kwc-table-column>
-      <kwc-table-column header="City" property="city"></kwc-table-column>
+      <kwc-table-column header="" property="name" sortable></kwc-table-column>
+      <kwc-table-column header="Phone" property="phone" sortable></kwc-table-column>
+      <kwc-table-column header="City" property="city" sortable></kwc-table-column>
       <kwc-table-column header="Country" property="country"></kwc-table-column>
     </kwc-table>
   </template>
@@ -69,6 +96,12 @@
             {
               "name": "Iliana",
               "phone": "177-2985",
+              "city": "Beaumont",
+              "country": "Kazakhstan"
+            },
+            {
+              "name": "Iliana",
+              "phone": "523",
               "city": "Beaumont",
               "country": "Kazakhstan"
             },
@@ -119,23 +152,29 @@
               "phone": "1-195-344-5654",
               "city": "St. Thomas",
               "country": "Turks and Caicos Islands"
-            },
-            {
-              "name": "Melyssa",
-              "phone": "733-5646",
-              "city": "New Haven",
-              "country": "Guinea"
             }
           ]
         }
       },
 
       attached: function () {
-        // This simulate a change of header it could happen with a i18n system.
         var that = this
+        // This simulate a change of header it could happen with a i18n system.
         setTimeout(function () {
           that.querySelector("kwc-table-column").header = "Name"
         }, 1000)
+
+        // This simulate a change in data.
+        setTimeout(function () {
+          var newData = [].concat(that.data)
+          newData.push({
+            "name": "Melyssa",
+            "phone": "733-5646",
+            "city": "New Haven",
+            "country": "Guinea"
+          })
+          that.data = newData
+        }, 2000)
       }
     })
   </script>

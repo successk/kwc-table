@@ -44,12 +44,12 @@
       <thead>
       <tr>
         <template is="dom-repeat" items="[[_columns]]" as="column">
-          <th>[[column.header]]</th>
+          <th class$="{{_getClass(index)}}" data-index$="{{index}}">[[column.header]]</th>
         </template>
       </tr>
       </thead>
       <tbody>
-      <template is="dom-repeat" items="[[data]]" as="row">
+      <template is="dom-repeat" items="[[data]]" as="row" sort="_sort" id="rows">
         <tr>
           <template is="dom-repeat" items="[[_columns]]" as="column">
             <td>[[_getCellContent(row, column)]]</td>
@@ -77,30 +77,128 @@
         _columns: {
           type: Array,
           value: []
+        },
+        _sortedColumns: {
+          type: Array,
+          value: [{
+            index: 1,
+            order: "up"
+          }]
         }
       },
 
       attached: function () {
-        var that = this
-        this._reloadColumns()
-        this.addEventListener("header-changed", function (e) {
-          if (window.kwc_table_helpers.isChildOf(e.target, this)) {
-            that._reloadColumns()
-          }
-        }, true)
+        var that = this;
+        this._reloadColumns();
+        ["header", "property", "sortable"].forEach(function (p) {
+          that.addEventListener(p + "-changed", function (e) {
+            that._handleKwcTableColumnPropertyChanged(e);
+          }, true);
+        })
+
+        this.addEventListener("click", function (e) {
+          that._handleHeaderClicked(e);
+        }, true);
       },
 
+      // Data updates
+
       _reloadColumns: function () {
-        this._columns = Array.from(this.querySelectorAll("kwc-table-column")).map(function (column) {
-          return {
-            header: column.header,
-            property: column.property
+        var that = this;
+        this._columns = null;
+        this.async(function () {
+          that._columns = Array.from(that.querySelectorAll("kwc-table-column"));
+        });
+        this._refreshTable();
+      },
+
+      // Event handlers
+
+      _handleKwcTableColumnPropertyChanged: function (e) {
+        if (window.kwc_table_helpers.isChildOf(e.target, this)) {
+          this._reloadColumns();
+        }
+      },
+
+      _handleHeaderClicked(e) {
+        if (e.target.classList.contains("kwc-table-th") && window.kwc_table_helpers.isChildOf(e.target, this)) {
+          var index = parseInt(e.target.getAttribute("data-index"));
+          var column = this._columns[index];
+          if (column.sortable) {
+            var newSortedColumns = this._sortedColumns === null ? [] : this._sortedColumns.filter(function (c) {
+              return c.index !== index;
+            });
+            if (this._sortedColumns !== null && this._sortedColumns.length > 0 && this._sortedColumns[0].index === index) {
+              newSortedColumns.unshift({
+                index: index,
+                order: this._sortedColumns[0].order === "up" ? "down" : "up"
+              });
+            } else {
+              newSortedColumns.unshift({
+                index: index,
+                order: "up"
+              });
+            }
+            this._sortedColumns = newSortedColumns;
+            this._reloadColumns();
+            this._refreshTable();
           }
-        })
+        }
+      },
+
+      // Helpers for dom template
+
+      _sort: function (row1, row2) {
+        if (this.isAttached) {
+          if (this._sortedColumns !== null && this._sortedColumns.length > 0) {
+            for (var i = 0, c = this._sortedColumns.length; i < c; i++) {
+              var sortedColumn = this._sortedColumns[i];
+              var column = this._columns[sortedColumn.index]
+              var p1 = row1[column.property];
+              var p2 = row2[column.property];
+              if (p1 != p2) {
+                return (p1 < p2)
+                    ? (sortedColumn.order === "up" ? -1 : 1)
+                    : (sortedColumn.order === "up" ? 1 : -1);
+              }
+            }
+            return 0;
+          } else {
+            return 0;
+          }
+        } else {
+          return 0;
+        }
+      },
+
+      _getClass: function (columnIndex) {
+        var classes = ["kwc-table-th"];
+        var column = this._columns[columnIndex];
+        if (column.sortable) {
+          classes.push("sortable");
+
+          var sortedColumnIndex = this._sortedColumns.findIndex(function (sortedColumn) {
+            return sortedColumn.index === columnIndex;
+          });
+          if (sortedColumnIndex > -1) {
+            var sortedColumn = this._sortedColumns[sortedColumnIndex];
+            classes.push("sort");
+            classes.push(sortedColumn.order);
+            classes.push("level" + (parseInt(sortedColumnIndex) + 1));
+          }
+        }
+        return classes.join(" ");
       },
 
       _getCellContent: function (row, column) {
-        return row[column.property]
+        return row[column.property];
+      },
+
+      _refreshTable: function () {
+        var that = this;
+        this.async(function () {
+          that.$.rows.render();
+        });
       }
     })
   </script>
