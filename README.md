@@ -116,17 +116,34 @@ None      | -        | -
 
 ### kwc-table
 
+The structure of this component follows the one of a table.
+To style it, you can set CSS rules on `kwc-table ::content <element>`.
+
+You can see classes used in this components below.
+
+Name        | Description
+---         | ---
+`.sortable` | Applied on a `<th>` element when the column is sortable.
+`.sorted`   | Applied on a `<th>` element when the column is sorted (up or down)
+`.up`       | Applied on a `<th>` element when the column is sorted ascending
+`.down`     | Applied on a `<th>` element when the column is sorted descending
+`level<x>`  | Applied on a `<th>` element indicating the priority of the column when sorting (from 1 up to number of sortable columns)
+
+You can see the [code of demo](index-kwc-table-show) for example of use
+
+#### Deprecated styles – will be removed in version 1.x.x
+
 Name                        | Default | Description
 ---                         | ---     | ---
-`--kwc-table-table`         | {}      | Styles for table
-`--kwc-table-thead`         | {}      | Styles for thead
-`--kwc-table-thead-tr`      | {}      | Styles for tr in thead
-`--kwc-table-thead-th`      | {}      | Styles for th in thead
-`--kwc-table-tbody`         | {}      | Styles for tbody
-`--kwc-table-tbody-tr`      | {}      | Styles for all tr in tbody
-`--kwc-table-tbody-tr-odd`  | {}      | Styles for odd tr in tbody
-`--kwc-table-tbody-tr-even` | {}      | Styles for event tr in tbody
-`--kwc-table-tbody-td`      | {}      | Styles for all td in tbody
+`--kwc-table-table`         | {}      | Deprecated – use `kwc-table ::content table` instead
+`--kwc-table-thead`         | {}      | Deprecated – use `kwc-table ::content thead` instead
+`--kwc-table-thead-tr`      | {}      | Deprecated – use `kwc-table ::content thead tr` instead
+`--kwc-table-thead-th`      | {}      | Deprecated – use `kwc-table ::content thead th` instead
+`--kwc-table-tbody`         | {}      | Deprecated – use `kwc-table ::content tbody` instead
+`--kwc-table-tbody-tr`      | {}      | Deprecated – use `kwc-table ::content tbody tr` instead
+`--kwc-table-tbody-tr-odd`  | {}      | Deprecated – use `kwc-table ::content tbody tr:nth-of-type(odd)` instead
+`--kwc-table-tbody-tr-even` | {}      | Deprecated – use `kwc-table ::content tbody tr:nth-of-type(even)` instead
+`--kwc-table-tbody-td`      | {}      | Deprecated – use `kwc-table ::content tbody td` instead
 
 ### kwc-table-column
 

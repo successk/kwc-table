@@ -6,44 +6,42 @@
   <template>
     <style>
       /* These styles test the right application of mixin */
-      kwc-table {
-        --kwc-table-table: {
-          width: 100%;
-          border-collapse: collapse;
-        };
+      kwc-table ::content table {
+        width: 100%;
+        border-collapse: collapse;
+      }
 
-        --kwc-table-thead: {
-          border-bottom: 1px solid #000;
-        };
+      kwc-table ::content thead {
+        border-bottom: 1px solid #000;
+      }
 
-        --kwc-table-thead-tr: {
-          background-color: #ff6f00;
-          color: #fff;
-        };
+      kwc-table ::content thead tr {
+        background-color: #ff6f00;
+        color: #fff;
+      }
 
-        --kwc-table-thead-th: {
-          text-align: left;
-        };
+      kwc-table ::content thead th {
+        text-align: left;
+      }
 
-        --kwc-table-tbody: {
-          border: 1px solid #000;
-        };
+      kwc-table ::content tbody {
+        border: 1px solid #000;
+      }
 
-        --kwc-table-tbody-tr: {
-          font-style: italic;
-        };
+      kwc-table ::content tbody tr {
+        font-style: italic;
+      }
 
-        --kwc-table-tbody-tr-odd: {
-          background-color: #fff8e1;
-        };
+      kwc-table ::content tbody tr:nth-of-type(odd) {
+        background-color: #fff8e1;
+      }
 
-        --kwc-table-tbody-tr-even: {
-          background-color: #ffecb3;
-        };
+      kwc-table ::content tbody tr:nth-of-type(even) {
+        background-color: #ffecb3;
+      }
 
-        --kwc-table-tbody-td: {
-          font-weight: bold;
-        };
+      kwc-table ::content tbody td {
+        font-weight: bold;
       }
 
       kwc-table ::content .sortable {
@@ -51,27 +49,27 @@
         cursor: pointer;
       }
 
-      kwc-table ::content .sortable.sort:after {
+      kwc-table ::content .sorted:after {
         margin-left: 1rem;
       }
 
-      kwc-table ::content .sortable.up:after {
+      kwc-table ::content .up:after {
         content: "↑";
       }
 
-      kwc-table ::content .sortable.down:after {
+      kwc-table ::content .down:after {
         content: "↓";
       }
 
-      kwc-table ::content .sortable.level1:after {
+      kwc-table ::content .level1:after {
         font-size: 2rem;
       }
 
-      kwc-table ::content .sortable.level2:after {
+      kwc-table ::content .level2:after {
         font-size: 1.5rem;
       }
 
-      kwc-table ::content .sortable.level3:after {
+      kwc-table ::content .level3:after {
         font-size: 1rem;
       }
     </style>

@@ -3,38 +3,47 @@
 <dom-module id="kwc-table">
   <template>
     <style>
+      /* deprecated, use "kwc-table ::content table" instead */
       table {
         @apply(--kwc-table-table);
       }
 
+      /* deprecated, use "kwc-table ::content thead instead */
       thead {
         @apply(--kwc-table-thead);
       }
 
+      /* deprecated, use "kwc-table ::content thead" tr instead */
       thead tr {
         @apply(--kwc-table-thead-tr);
       }
 
+      /* deprecated, use "kwc-table ::content thead th" instead */
       thead th {
         @apply(--kwc-table-thead-th);
       }
 
+      /* deprecated, use "kwc-table ::content tbody" instead */
       tbody {
         @apply(--kwc-table-tbody);
       }
 
+      /* deprecated, use "kwc-table ::content tbody tr" instead */
       tbody tr {
         @apply(--kwc-table-tbody-tr);
       }
 
+      /* deprecated, use "kwc-table ::content tbody tr:nth-of-type(odd)" instead */
       tbody tr:nth-of-type(odd) {
         @apply(--kwc-table-tbody-tr-odd);
       }
 
+      /* deprecated, use "kwc-table ::content tbody tr:nth-of-type(even)" instead */
       tbody tr:nth-of-type(even) {
         @apply(--kwc-table-tbody-tr-even);
       }
 
+      /* deprecated, use "kwc-table ::content tbody td" instead */
       tbody td {
         @apply(--kwc-table-tbody-td);
       }
@@ -182,7 +191,7 @@
           });
           if (sortedColumnIndex > -1) {
             var sortedColumn = this._sortedColumns[sortedColumnIndex];
-            classes.push("sort");
+            classes.push("sorted");
             classes.push(sortedColumn.order);
             classes.push("level" + (parseInt(sortedColumnIndex) + 1));
           }
