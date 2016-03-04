@@ -74,12 +74,14 @@
       }
     </style>
 
-    <kwc-table data="[[data]]">
+    <kwc-table data="[[data]]" id="table">
       <kwc-table-column header="" property="name" sortable></kwc-table-column>
       <kwc-table-column header="Phone" property="phone" sortable></kwc-table-column>
       <kwc-table-column header="City" property="city" sortable></kwc-table-column>
       <kwc-table-column header="Country" property="country"></kwc-table-column>
     </kwc-table>
+
+    <button id="removeSort">Remove sort</button>
   </template>
 
   <script>
@@ -155,6 +157,10 @@
         }
       },
 
+      listeners: {
+        "removeSort.tap": "removeSort"
+      },
+
       attached: function () {
         var that = this
         // This simulate a change of header it could happen with a i18n system.
@@ -173,6 +179,11 @@
           })
           that.data = newData
         }, 2000)
+      },
+
+      removeSort: function(e) {
+        e.preventDefault()
+        this.$.table.removeSort()
       }
     })
   </script>

@@ -52,7 +52,7 @@
     <table>
       <thead>
       <tr>
-        <template is="dom-repeat" items="[[_columns]]" as="column">
+        <template is="dom-repeat" items="[[_columns]]" as="column" id="headers">
           <th class$="{{_getClass(index)}}" data-index$="{{index}}">[[column.header]]</th>
         </template>
       </tr>
@@ -89,16 +89,12 @@
         },
         _sortedColumns: {
           type: Array,
-          value: [{
-            index: 1,
-            order: "up"
-          }]
+          value: []
         }
       },
 
       attached: function () {
         var that = this;
-        this._reloadColumns();
         ["header", "property", "sortable"].forEach(function (p) {
           that.addEventListener(p + "-changed", function (e) {
             that._handleKwcTableColumnPropertyChanged(e);
@@ -110,14 +106,10 @@
         }, true);
       },
 
-      // Data updates
+      // Public methods
 
-      _reloadColumns: function () {
-        var that = this;
-        this._columns = null;
-        this.async(function () {
-          that._columns = Array.from(that.querySelectorAll("kwc-table-column"));
-        });
+      removeSort: function () {
+        this._sortedColumns = [];
         this._refreshTable();
       },
 
@@ -125,7 +117,7 @@
 
       _handleKwcTableColumnPropertyChanged: function (e) {
         if (window.kwc_table_helpers.isChildOf(e.target, this)) {
-          this._reloadColumns();
+          this._refreshTable();
         }
       },
 
@@ -149,7 +141,6 @@
               });
             }
             this._sortedColumns = newSortedColumns;
-            this._reloadColumns();
             this._refreshTable();
           }
         }
@@ -205,7 +196,9 @@
 
       _refreshTable: function () {
         var that = this;
+        this._columns = null;
         this.async(function () {
+          that._columns = Array.from(that.querySelectorAll("kwc-table-column"));
           that.$.rows.render();
         });
       }

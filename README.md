@@ -69,6 +69,7 @@ Attribute   | Options         | Default      | Description
 ---         | ---             | ---          | ---
 `header`    | *String*        | `null`       | Title of column
 `property`  | *String*        | `null`       | Property name from data for the column
+`sortable`  | *Boolean*       | `false`      | If true, the use can click on the header to sort by this column. See **Sort** part for more information.
 
 ## Children
 
@@ -96,7 +97,7 @@ None          | -            | -           | -
 
 Method        | Parameters   | Returns     | Description
 ---           | ---          | ---         | ---
-None          | -            | -           | -
+removeSort    | -            | -           | Remove the sort on the table
 
 ## Events
 
@@ -150,6 +151,18 @@ Name                        | Default | Description
 Name | Default | Description
 ---  | ---     | ---
 None | -       | -
+
+## Sort
+
+This component is able to sort data by one or several columns.
+For this purpose, you need to set the `sortable` property (see **Options** part for more information).
+Once set, the use just need to click on the header to sort the table by this column values.
+The first time he click on the header, it will be sorted ascending, the second time descending.
+When the user click on another `sortable` column header, the sort will be by this new column, then the previous one when there is two same values.
+
+To remove the sort, you just need to call `removeSort` on `<kwc-table>` element.
+
+See the demo by following instructions in **Development** part.
 
 ## Development
 
