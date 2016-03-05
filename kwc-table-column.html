@@ -17,13 +17,28 @@
         },
         property: {
           type: String,
-          value: null,
-          notify: true
+          value: null
         },
         sortable: {
           type: Boolean,
-          value: false,
+          value: false
+        },
+        sorted: {
+          type: Number,
+          value: null
+        },
+        order: {
+          type: String,
+          value: null
+        },
+        classes: {
+          type: String,
+          computed: "_computeClasses(sortable, sorted, order)",
           notify: true
+        },
+        index: {
+          type: Number,
+          value: null
         },
         _cellTemplate: {
           type: Object,
@@ -31,7 +46,7 @@
         }
       },
 
-      ready: function() {
+      ready: function () {
         if (!this.querySelector("kwc-table-header")) {
           this.appendChild(document.createElement("kwc-table-header"));
         }
@@ -40,12 +55,26 @@
         }
       },
 
-      getHeaderContent: function() {
+      getHeaderContent: function () {
         return this.querySelector("kwc-table-header").getContent();
       },
 
       getCellContent: function (row) {
         return this.querySelector("kwc-table-cell").getContent(row);
+      },
+
+      _computeClasses: function (sortable, sorted, order) {
+        var classes = ["kwc-table-th"];
+        if (sortable) {
+          classes.push("sortable");
+
+          if (sorted) {
+            classes.push("sorted");
+            classes.push(order);
+            classes.push("level" + sorted);
+          }
+        }
+        return classes.join(" ");
       }
     })
   </script>
