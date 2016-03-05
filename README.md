@@ -25,6 +25,10 @@ Or [download as ZIP](https://github.com/successk/kwc-table/archive/master.zip).
 ```html
 <link rel="import" href="bower_components/kwc-table/kwc-table.html">
 <link rel="import" href="bower_components/kwc-table/kwc-table-column.html">
+
+<!-- For custom header or cell rendering -->
+<link rel="import" href="bower_components/kwc-table/kwc-table-header.html">
+<link rel="import" href="bower_components/kwc-table/kwc-table-cell.html">
 ```
 
 3 – Start using it!
@@ -33,6 +37,18 @@ Or [download as ZIP](https://github.com/successk/kwc-table/archive/master.zip).
 <kwc-table data="[[data]]">
   <kwc-table-column header="Column 1" property="property1"></kwc-table-column>
   <kwc-table-column header="Column 2" property="property2"></kwc-table-column>
+  <kwc-table-column>
+    <kwc-table-header>
+      <template>
+        <!-- Custom header rendering, see **Custom templates** for more information -->
+      </template>
+    </kwc-table-header>
+    <kwc-table-cell>
+      <template>
+        <!-- Custom cell rendering, see **Custom templates** for more information -->
+      </template>
+    </kwc-table-cell>
+  </kwc-table-column>
   <!-- ... -->
 </kwc-table>
 
@@ -71,6 +87,18 @@ Attribute   | Options         | Default      | Description
 `property`  | *String*        | `null`       | Property name from data for the column
 `sortable`  | *Boolean*       | `false`      | If true, the use can click on the header to sort by this column. See **Sort** part for more information.
 
+### kwc-table-header
+
+Attribute   | Options         | Default      | Description
+---         | ---             | ---          | ---
+None        | -               | -            | -
+
+### kwc-table-cell
+
+Attribute   | Options         | Default      | Description
+---         | ---             | ---          | ---
+None        | -               | -            | -
+
 ## Children
 
 ### kwc-table
@@ -81,9 +109,22 @@ Selector | Description
 
 ### kwc-table-column
 
-Selector                  | Description
----                       | ---
-`template.kwc-table-cell` | If defined, use this template to customize cell rendering. See **Cell rendering** for more information.
+Selector           | Description
+---                | ---
+`kwc-table-header` | If defined, use the child template to customize header rendering. See **Custom template** for more information.
+`kwc-table-cell`   | If defined, use the child template to customize cell rendering. See **Custom template** for more information.
+
+### kwc-table-header
+
+Selector   | Description
+---        | ---
+`template` | If defined, use this template to customize header rendering. See **Custom template** for more information.
+
+### kwc-table-cell
+
+Selector   | Description
+---        | ---
+`template` | If defined, use this template to customize cell rendering. See **Custom template** for more information.
 
 ## Methods
 
@@ -91,13 +132,25 @@ Selector                  | Description
 
 Method        | Parameters   | Returns     | Description
 ---           | ---          | ---         | ---
-None          | -            | -           | -
+removeSort    | -            | -           | Remove the sort on the table
 
 ### kwc-table-column
 
 Method        | Parameters   | Returns     | Description
 ---           | ---          | ---         | ---
-removeSort    | -            | -           | Remove the sort on the table
+None          | -            | -           | -
+
+### kwc-table-header
+
+Method        | Parameters   | Returns     | Description
+---           | ---          | ---         | ---
+None          | -            | -           | -
+
+### kwc-table-cell
+
+Method        | Parameters   | Returns     | Description
+---           | ---          | ---         | ---
+None          | -            | -           | -
 
 ## Events
 
@@ -108,6 +161,18 @@ Event     | Detail   | Description
 None      | -        | -
 
 ### kwc-table-column
+
+Event     | Detail   | Description
+---       | ---      | ---
+None      | -        | -
+
+### kwc-table-header
+
+Event     | Detail   | Description
+---       | ---      | ---
+None      | -        | -
+
+### kwc-table-cell
 
 Event     | Detail   | Description
 ---       | ---      | ---
@@ -152,6 +217,18 @@ Name | Default | Description
 ---  | ---     | ---
 None | -       | -
 
+### kwc-table-header
+
+Name | Default | Description
+---  | ---     | ---
+None | -       | -
+
+### kwc-table-cell
+
+Name | Default | Description
+---  | ---     | ---
+None | -       | -
+
 ## Sort
 
 This component is able to sort data by one or several columns.
@@ -164,11 +241,21 @@ To remove the sort, you just need to call `removeSort` on `<kwc-table>` element.
 
 See the demo by following instructions in **Development** part.
 
-## Cell rendering
+## Custom templates
 
-This component provides a simple way to customize the render of cells.
-You just need to provide the template used to render the cell.
-There is two parameters passed into template:
+This component provides a simple way to customize the render of headers and cells.
+
+### Custom header
+
+To customize the rendering of the header, declare a `<kwc-table-header>` with a `<template>`.
+There is one parameter passed into this template:
+
+* `column`: The column declaration `kwc-table-column` element
+
+### Custom cell
+
+To customize the rendering of the header, declare a `<kwc-table-cell>` with a `<template>`.
+There is two parameters passed into this template:
 
 * `value`: The value of `kwc-table-column.property`
 * `row`: The current row
@@ -177,17 +264,27 @@ There is two parameters passed into template:
 
 ```html
 <kwc-table-column header="My column" property="myProperty">
-  <!-- Display the property value inside a .my-class element. -->
-  <template class="kwc-table-cell">
-    <span class="my-class">[[value]]</span>
-  </template>
+  <kwc-table-cell>
+    <template>
+      <!-- Display the property value inside a .my-class element. -->
+      <span class="my-class">[[value]]</span>
+    </template>
+  </kwc-table-cell>
 </kwc-table-column>
 
-<kwc-table-column header="Action">
-  <!-- Display the a link from id of current row -->
-  <template class="kwc-table-cell">
-    <a href="/my/url/with/[[row.id]]">My link</a>
-  </template>
+<kwc-table-column>
+  <kwc-table-header>
+    <template>
+      <!-- Display an icon before the title -->
+      <span class="icon-actions"></span> Actions
+    </template>
+  </kwc-table-header>
+  <kwc-table-cell>
+    <template>
+      <!-- Display the a link from id of current row -->
+      <a href="/my/url/with/[[row.id]]">My link</a>
+    </template>
+  </kwc-table-cell>
 </kwc-table-column>
 ```
 

@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="kwc-table-cell">
+  <template>
+    <template id="base" class="base">[[value]]</template>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'kwc-table-cell',
+
+      behaviors: [
+        Polymer.Templatizer
+      ],
+
+      ready: function () {
+        var template = this.querySelector("template:not(.base)");
+        if (template == null) {
+          template = this.$.base;
+        }
+        this.templatize(template);
+      },
+
+      getContent: function (row) {
+        var column = window.kwc_table_helpers.getParentNode(this, "kwc-table-column");
+        return this.stamp({
+          row: row,
+          value: row[column.property]
+        });
+      }
+    })
+  </script>
+</dom-module>

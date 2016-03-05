@@ -1,0 +1,33 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="kwc-table-header">
+  <template>
+    <template id="base" class="base">[[column.header]]</template>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'kwc-table-header',
+
+      behaviors: [
+        Polymer.Templatizer
+      ],
+
+      ready: function () {
+        var template = this.querySelector("template:not(.base)");
+        if (template == null) {
+          template = this.$.base;
+        }
+        this.templatize(template);
+      },
+
+      getContent: function () {
+        var column = window.kwc_table_helpers.getParentNode(this, "kwc-table-column");
+        return this.stamp({
+          column: column
+        });
+      }
+    })
+  </script>
+</dom-module>

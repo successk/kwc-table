@@ -2,7 +2,6 @@
 
 <dom-module id="kwc-table-column">
   <template>
-    <template id="base">[[value]]</template>
     <content></content>
   </template>
 
@@ -32,23 +31,21 @@
         }
       },
 
-      behaviors: [
-        Polymer.Templatizer
-      ],
-
-      ready: function () {
-        var template = this.querySelector("template.kwc-table-cell");
-        if (template == null) {
-          template = this.$.base;
+      ready: function() {
+        if (!this.querySelector("kwc-table-header")) {
+          this.appendChild(document.createElement("kwc-table-header"));
         }
-        this.templatize(template);
+        if (!this.querySelector("kwc-table-cell")) {
+          this.appendChild(document.createElement("kwc-table-cell"));
+        }
+      },
+
+      getHeaderContent: function() {
+        return this.querySelector("kwc-table-header").getContent();
       },
 
       getCellContent: function (row) {
-        return this.stamp({
-          row: row,
-          value: row[this.property]
-        });
+        return this.querySelector("kwc-table-cell").getContent(row);
       }
     })
   </script>

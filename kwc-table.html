@@ -53,7 +53,7 @@
       <thead>
       <tr>
         <template is="dom-repeat" items="[[_columns]]" as="column" id="headers">
-          <th class$="{{_getClass(index)}}" data-index$="{{index}}">[[column.header]]</th>
+          <th class$="{{_getClass(index)}}" data-index$="{{index}}"></th>
         </template>
       </tr>
       </thead>
@@ -151,9 +151,9 @@
 
       // property changes
 
-      _dataChanged: function() {
+      _dataChanged: function () {
         if (this.data && this.data.length > 0) {
-          for (var i = 0, c = this.data.length ; i < c ; i++) {
+          for (var i = 0, c = this.data.length; i < c; i++) {
             this.data[i]._kwctableid = i
           }
         }
@@ -163,7 +163,7 @@
       // Helpers for dom template
 
       _sort: function (row1, row2) {
-        if (this.isAttached) {
+        if (this.isAttached && this._columns) {
           if (this._sortedColumns !== null && this._sortedColumns.length > 0) {
             for (var i = 0, c = this._sortedColumns.length; i < c; i++) {
               var sortedColumn = this._sortedColumns[i];
@@ -205,6 +205,26 @@
       },
 
       _fillTable: function () {
+        this._fillTableHeader();
+        this._fillTableData();
+      },
+
+      _fillTableHeader: function () {
+        var that = this
+        this.async(function () {
+          Array.from(that.querySelectorAll(".kwc-table-th")).forEach(function (td) {
+            var columnIndex = td.getAttribute("data-index");
+            var column = that._columns[columnIndex];
+            while (td.lastChild) {
+              td.removeChild(td.lastChild);
+            }
+            var node = column.getHeaderContent();
+            td.appendChild(node.root);
+          });
+        });
+      },
+
+      _fillTableData: function () {
         var that = this
         this.async(function () {
           Array.from(that.querySelectorAll("td[data-cell-index]")).forEach(function (td) {

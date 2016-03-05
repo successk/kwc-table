@@ -1,6 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="kwc-table.html">
 <link rel="import" href="kwc-table-column.html">
+<link rel="import" href="kwc-table-cell.html">
+<link rel="import" href="kwc-table-header.html">
 
 <dom-module id="index-kwc-table-show">
   <template>
@@ -76,6 +78,10 @@
       .name {
         color: #b71c1c;
       }
+
+      .custom-header {
+        color: #00e5ff;
+      }
     </style>
 
     <kwc-table data="[[data]]" id="table">
@@ -87,12 +93,19 @@
       <kwc-table-column header="Phone" property="phone" sortable></kwc-table-column>
       <kwc-table-column header="City" property="city" sortable></kwc-table-column>
       <kwc-table-column header="Country" property="country"></kwc-table-column>
-      <kwc-table-column header="Actions">
-        <template class="kwc-table-cell">
-          <a href="#/profile/[[row.id]]">
-            Go to profile
-          </a>
-        </template>
+      <kwc-table-column>
+        <kwc-table-header>
+          <template>
+            <span class="custom-header">Actions</span>
+          </template>
+        </kwc-table-header>
+        <kwc-table-cell>
+          <template>
+            <a href="#/profile/[[row.id]]">
+              Go to profile
+            </a>
+          </template>
+        </kwc-table-cell>
       </kwc-table-column>
     </kwc-table>
 
