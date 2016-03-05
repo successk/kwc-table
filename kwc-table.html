@@ -59,9 +59,9 @@
       </thead>
       <tbody>
       <template is="dom-repeat" items="[[data]]" as="row" sort="_sort" id="rows">
-        <tr>
+        <tr data-row-index$="[[row._kwctableid]]">
           <template is="dom-repeat" items="[[_columns]]" as="column">
-            <td>[[_getCellContent(row, column)]]</td>
+            <td data-cell-index$="[[index]]"></td>
           </template>
         </tr>
       </template>
@@ -81,7 +81,8 @@
       properties: {
         data: {
           type: Array,
-          value: []
+          value: [],
+          observer: "_dataChanged"
         },
         _columns: {
           type: Array,
@@ -104,6 +105,8 @@
         this.addEventListener("click", function (e) {
           that._handleHeaderClicked(e);
         }, true);
+
+        this._refreshTable();
       },
 
       // Public methods
@@ -144,6 +147,17 @@
             this._refreshTable();
           }
         }
+      },
+
+      // property changes
+
+      _dataChanged: function() {
+        if (this.data && this.data.length > 0) {
+          for (var i = 0, c = this.data.length ; i < c ; i++) {
+            this.data[i]._kwctableid = i
+          }
+        }
+        this._refreshTable();
       },
 
       // Helpers for dom template
@@ -190,8 +204,21 @@
         return classes.join(" ");
       },
 
-      _getCellContent: function (row, column) {
-        return row[column.property];
+      _fillTable: function () {
+        var that = this
+        this.async(function () {
+          Array.from(that.querySelectorAll("td[data-cell-index]")).forEach(function (td) {
+            var columnIndex = td.getAttribute("data-cell-index");
+            var rowIndex = td.parentNode.getAttribute("data-row-index");
+            var row = that.data[rowIndex];
+            var column = that._columns[columnIndex];
+            while (td.lastChild) {
+              td.removeChild(td.lastChild);
+            }
+            var node = column.getCellContent(row);
+            td.appendChild(node.root);
+          });
+        });
       },
 
       _refreshTable: function () {
@@ -200,6 +227,7 @@
         this.async(function () {
           that._columns = Array.from(that.querySelectorAll("kwc-table-column"));
           that.$.rows.render();
+          that._fillTable();
         });
       }
     })

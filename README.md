@@ -81,9 +81,9 @@ Selector | Description
 
 ### kwc-table-column
 
-Selector | Description
----      | ---
-None     | -
+Selector                  | Description
+---                       | ---
+`template.kwc-table-cell` | If defined, use this template to customize cell rendering. See **Cell rendering** for more information.
 
 ## Methods
 
@@ -163,6 +163,33 @@ When the user click on another `sortable` column header, the sort will be by thi
 To remove the sort, you just need to call `removeSort` on `<kwc-table>` element.
 
 See the demo by following instructions in **Development** part.
+
+## Cell rendering
+
+This component provides a simple way to customize the render of cells.
+You just need to provide the template used to render the cell.
+There is two parameters passed into template:
+
+* `value`: The value of `kwc-table-column.property`
+* `row`: The current row
+
+### Example
+
+```html
+<kwc-table-column header="My column" property="myProperty">
+  <!-- Display the property value inside a .my-class element. -->
+  <template class="kwc-table-cell">
+    <span class="my-class">[[value]]</span>
+  </template>
+</kwc-table-column>
+
+<kwc-table-column header="Action">
+  <!-- Display the a link from id of current row -->
+  <template class="kwc-table-cell">
+    <a href="/my/url/with/[[row.id]]">My link</a>
+  </template>
+</kwc-table-column>
+```
 
 ## Development
 

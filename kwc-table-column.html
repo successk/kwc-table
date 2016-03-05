@@ -1,7 +1,10 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <dom-module id="kwc-table-column">
-  <template></template>
+  <template>
+    <template id="base">[[value]]</template>
+    <content></content>
+  </template>
 
   <script>
     Polymer({
@@ -22,7 +25,30 @@
           type: Boolean,
           value: false,
           notify: true
+        },
+        _cellTemplate: {
+          type: Object,
+          value: null
         }
+      },
+
+      behaviors: [
+        Polymer.Templatizer
+      ],
+
+      ready: function () {
+        var template = this.querySelector("template.kwc-table-cell");
+        if (template == null) {
+          template = this.$.base;
+        }
+        this.templatize(template);
+      },
+
+      getCellContent: function (row) {
+        return this.stamp({
+          row: row,
+          value: row[this.property]
+        });
       }
     })
   </script>
