@@ -24,11 +24,6 @@ Or [download as ZIP](https://github.com/successk/kwc-table/archive/master.zip).
 
 ```html
 <link rel="import" href="bower_components/kwc-table/kwc-table.html">
-<link rel="import" href="bower_components/kwc-table/kwc-table-column.html">
-
-<!-- For custom header or cell rendering -->
-<link rel="import" href="bower_components/kwc-table/kwc-table-header.html">
-<link rel="import" href="bower_components/kwc-table/kwc-table-cell.html">
 ```
 
 3 – Start using it!
