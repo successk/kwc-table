@@ -26,7 +26,9 @@
         var column = window.kwc_table_helpers.getParentNode(this, "kwc-table-column");
         return this.stamp({
           row: row,
-          value: row[column.property]
+          // If the value is *undefined*, the cell duplicate previous cell in column.
+          // With *null*, the cell will be empty by default.
+          value: row[column.property] || null
         });
       }
     })
