@@ -99,13 +99,22 @@
           that.addEventListener(p + "-changed", function (e) {
             that._handleKwcTableColumnPropertyChanged(e);
           }, true);
-        })
+        });
 
         this.addEventListener("click", function (e) {
           that._handleHeaderClicked(e);
         }, true);
 
         this._refreshTable();
+
+        this.addEventListener("values-changed", function (event) {
+          if (event.target.localName === "kwc-select") {
+            if (event.target.parentNode && event.target.parentNode.hasAttribute("data-index")) {
+              that._columns[event.target.parentNode.getAttribute("data-index")]._filteredElements = event.detail.value;
+            }
+          }
+          that._refreshHiddenRows();
+        }, true);
       },
 
       // Public methods
@@ -151,10 +160,31 @@
       _dataChanged: function () {
         if (this.data && this.data.length > 0) {
           for (var i = 0, c = this.data.length; i < c; i++) {
-            this.data[i]._kwctableid = i
+            this.data[i]._kwctableid = i;
           }
         }
+        this._refreshHiddenRows();
         this._refreshTable();
+      },
+
+      _refreshHiddenRows: function () {
+        if (this.data && this._columns) {
+          var that = this;
+          this.data.forEach(function (row) {
+            row._kwctablehidden = !that._columns.every(function (column) {
+              return column._acceptedValue(row[column.property]);
+            });
+            if (row._kwctableid !== null) {
+              Array.from(that.querySelectorAll("tr"))
+                  .filter(function (tr) {
+                    return tr.getAttribute("data-row-index") == row._kwctableid;
+                  })
+                  .forEach(function (tr) {
+                    tr.hidden = row._kwctablehidden;
+                  });
+            }
+          });
+        }
       },
 
       // Helpers for dom template
@@ -188,7 +218,7 @@
       },
 
       _fillTableHeader: function () {
-        var that = this
+        var that = this;
         this.async(function () {
           Array.from(that.querySelectorAll(".kwc-table-th")).forEach(function (td) {
             var columnIndex = td.getAttribute("data-index");
@@ -203,7 +233,7 @@
       },
 
       _fillTableData: function () {
-        var that = this
+        var that = this;
         this.async(function () {
           Array.from(that.querySelectorAll("td[data-cell-index]")).forEach(function (td) {
             var columnIndex = td.getAttribute("data-cell-index");
@@ -216,6 +246,30 @@
             var node = column.getCellContent(row);
             td.appendChild(node.root);
           });
+          that._refreshExistingElements();
+        });
+      },
+
+      _refreshExistingElements: function () {
+        var that = this;
+        this.async(function () {
+          var columnElements = {};
+          Array.from(that.querySelectorAll("td[data-cell-index]")).forEach(function (td) {
+            var columnIndex = td.getAttribute("data-cell-index");
+            columnElements[columnIndex] = columnElements[columnIndex] || [];
+            columnElements[columnIndex].push(td.textContent);
+          });
+          for (var i = 0, c = that._columns.length; i < c; i++) {
+            if (columnElements[i]) {
+              var uniqueEntries = [];
+              columnElements[i].forEach(function (element) {
+                if (uniqueEntries.indexOf(element) === -1) {
+                  uniqueEntries.push(element);
+                }
+              });
+              that._columns[i]._existingElements = uniqueEntries;
+            }
+          }
         });
       },
 
@@ -231,7 +285,7 @@
             that.$.rows.render();
             that._fillTable();
             that._refreshing = null;
-          }
+          };
           this.async(this._refreshing);
         }
       },
@@ -245,7 +299,7 @@
           });
           sortedColumns.sort(function (col1, col2) {
             return col1.sorted - col2.sorted;
-          })
+          });
           return sortedColumns;
         } else {
           return [];

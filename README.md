@@ -76,11 +76,12 @@ Attribute   | Options         | Default      | Description
 
 ### kwc-table-column
 
-Attribute   | Options         | Default      | Description
----         | ---             | ---          | ---
-`header`    | *String*        | `null`       | Title of column
-`property`  | *String*        | `null`       | Property name from data for the column
-`sortable`  | *Boolean*       | `false`      | If true, the use can click on the header to sort by this column. See **Sort** part for more information.
+Attribute    | Options         | Default      | Description
+---          | ---             | ---          | ---
+`header`     | *String*        | `null`       | Title of column
+`property`   | *String*        | `null`       | Property name from data for the column
+`sortable`   | *Boolean*       | `false`      | If true, the use can click on the header to sort by this column. See **Sort** part for more information.
+`filterable` | *Boolean*       | `false`      | If true, a select box (see `kwc-select` element) will be shown to filter data in table.
 
 ### kwc-table-header
 
@@ -98,9 +99,9 @@ None        | -               | -            | -
 
 ### kwc-table
 
-Selector | Description
----      | ---
-*        | Table description (only `kwc-table-column` elements)
+Selector            | Description
+---                 | ---
+*                   | Table description (only `kwc-table-column` elements)
 
 ### kwc-table-column
 
@@ -190,7 +191,10 @@ Name        | Description
 `.down`     | Applied on a `<th>` element when the column is sorted descending
 `level<x>`  | Applied on a `<th>` element indicating the priority of the column when sorting (from 1 up to number of sortable columns)
 
-You can see the [code of demo](index-kwc-table-show) for example of use
+You can see the [code of demo](index-kwc-table-show) for example of use.
+
+You can add style in `kwc-select` component, it will be accepted.
+You can see the [code of demo](index-kwc-table-show) for example of use.
 
 #### Deprecated styles – will be removed in version 1.x.x
 

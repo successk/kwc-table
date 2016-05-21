@@ -40,6 +40,18 @@
           type: Number,
           value: null
         },
+        filterable: {
+          type: Boolean,
+          value: false
+        },
+        _existingElements: {
+          type: Array,
+          value: []
+        },
+        _filteredElements: {
+          type: Array,
+          value: []
+        },
         _cellTemplate: {
           type: Object,
           value: null
@@ -75,6 +87,10 @@
           }
         }
         return classes.join(" ");
+      },
+
+      _acceptedValue(value) {
+        return !this._filteredElements || !this._filteredElements.length || this._filteredElements.indexOf(value) >= 0;
       }
     })
   </script>

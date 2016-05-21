@@ -1,8 +1,14 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../kwc-select/kwc-select.html">
 
 <dom-module id="kwc-table-header">
   <template>
-    <template id="base" class="base">[[column.header]]</template>
+    <template id="base" class="base">
+      [[column.header]]
+      <template is="dom-if" if="[[column.filterable]]">
+        <kwc-select multiple items="[[column._existingElements]]"></kwc-select>
+      </template>
+    </template>
     <content></content>
   </template>
 

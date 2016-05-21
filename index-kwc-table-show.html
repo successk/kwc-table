@@ -79,15 +79,37 @@
       .custom-header {
         color: #00e5ff;
       }
+
+      kwc-table {
+        --kwc-select-button: {
+          background-color: white;
+          border: none;
+          cursor: pointer;
+        };
+
+        --kwc-select-box: {
+          color: black;
+          background-color: white;
+          min-width: 200px;
+          z-index: 100;
+        };
+
+        --kwc-select-search: {
+          border: none;
+          outline: none;
+          padding: 5px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.65);
+        }
+      }
     </style>
 
     <kwc-table data="[[data]]" id="table">
-      <kwc-table-column header="" property="name" sortable>
+      <kwc-table-column header="" property="name" sortable filterable>
         <template class="kwc-table-cell">
           <span class="name">[[value]]</span>
         </template>
       </kwc-table-column>
-      <kwc-table-column header="Phone" property="phone" sortable></kwc-table-column>
+      <kwc-table-column header="Phone" property="phone" sortable filterable></kwc-table-column>
       <kwc-table-column header="City" property="city" sortable></kwc-table-column>
       <kwc-table-column header="Country" property="country"></kwc-table-column>
       <kwc-table-column>
